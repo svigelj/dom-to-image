@@ -147,6 +147,11 @@ for JavaScript names of CSS properties.
 A number between 0 and 1 indicating image quality (e.g. 0.92 => 92%) of the
 JPEG image. Defaults to 1.0 (100%)
 
+### skipFonts
+
+Whether to skip downloading and embedding fonts. This should not be used if
+you use icon fonts or other fonts you need to show in the image. Defaults to false.
+
 #### cacheBust
 
 Set to true to append the current time as a query string to URL requests to enable cache busting. Defaults to false

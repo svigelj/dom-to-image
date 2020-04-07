@@ -46,6 +46,7 @@
      * @param {Object} options.style - an object whose properties to be copied to node's style before rendering.
      * @param {Number} options.quality - a Number between 0 and 1 indicating image quality (applicable to JPEG only), defaults to 1.0.
      * @param {String} options.imagePlaceholder - dataURL to use as a placeholder for failed images, default behaviour is to fail fast on images we can't fetch
+     * @param {Boolean} options.skipFonts - Whether to skip downloading fonts (default: false)
      * @param {Boolean} options.cacheBust - set to true to cache bust by appending the time to the request url
      * @return {Promise} - A promise that is fulfilled with a SVG image data URL
      * */
@@ -56,7 +57,11 @@
             .then(function (node) {
                 return cloneNode(node, options.filter, true);
             })
-            .then(embedFonts)
+            .then(function(node) {
+              if (!options || !options.skipFonts)
+                return embedFonts(node);
+              return node;
+            })
             .then(inlineImages)
             .then(applyOptions)
             .then(function (clone) {
