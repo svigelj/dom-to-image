@@ -6,6 +6,8 @@
     var fontFaces = newFontFaces();
     var images = newImages();
 
+    var resourcesList = [];
+
     // Default impl options
     var defaultOptions = {
         // Default is to fail on error, no placeholder
@@ -51,6 +53,8 @@
      * @return {Promise} - A promise that is fulfilled with a SVG image data URL
      * */
     function toSvg(node, options) {
+        resourcesList = [];
+
         options = options || {};
         copyOptions(options);
         return Promise.resolve(node)
@@ -488,6 +492,15 @@
 
             return new Promise(function (resolve) {
                 var request = new XMLHttpRequest();
+                
+                // Don't load resources again if they were previously loaded
+                if (resourcesList.includes(url)) {
+                    resolve()
+                    return
+                } else {
+                    // Remember which resources were already loaded
+                    resourcesList.push(url)
+                }
 
                 request.onreadystatechange = done;
                 request.ontimeout = timeout;
